@@ -27,6 +27,22 @@ int main(void)
 
     std::cout << glGetString(GL_VERSION) << std::endl;
 
+    float positions[6] = {
+        -0.5f, -0.5f,
+         0.0f,  0.5f,
+         0.5f, -0.5f
+    };
+    // Give OpenGL the data (copy as bytes to GPU memory)
+    unsigned int buffer;
+    glGenBuffers(1, &buffer);
+    glBindBuffer(GL_ARRAY_BUFFER, buffer);
+    // Copy data
+    glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), positions, GL_STATIC_DRAW);
+    // Define a vertex attribute (position)
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
+    // Enable this attribute
+    glEnableVertexAttribArray(0);
+
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
@@ -34,11 +50,15 @@ int main(void)
         glClear(GL_COLOR_BUFFER_BIT);
 
         // Legacy OpenGL for test purpose
-        glBegin(GL_TRIANGLES);
+        /*glBegin(GL_TRIANGLES);
         glVertex2f(-0.5f, -0.5f);
         glVertex2f(0.0f, 0.5f);
         glVertex2f(0.5f, -0.5f);
-        glEnd();
+        glEnd();*/
+
+        // Modern OpenGL
+        // Will draw the bound buffer
+        glDrawArrays(GL_TRIANGLES, 0, 3);
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);

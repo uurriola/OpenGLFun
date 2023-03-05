@@ -6,6 +6,27 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#define ASSERT(x) if (!(x)) __debugbreak();
+#define GLCall(x) GLClearError();\
+    x;\
+    ASSERT(GLLogCall(#x, __FILE__, __LINE__))
+
+
+static void GLClearError()
+{
+    while (glGetError() != GL_NO_ERROR);
+}
+
+static bool GLLogCall(const char* function, const char* file, int line)
+{
+    while (unsigned int error = glGetError())
+    {
+        std::cout << "[OpenGL Error] (" << error << "): " << function << " " << file << ": " << line << std::endl;
+        return false;
+    }
+    return true;
+}
+
 
 struct ShaderProgramSources
 {
@@ -106,6 +127,7 @@ int main(void)
 
     /* Make the window's context current */
     glfwMakeContextCurrent(window);
+    glfwSwapInterval(1);
 
     if (glewInit() != GLEW_OK)
         std::cout << "Error! " << std::endl;
@@ -126,20 +148,20 @@ int main(void)
 
     // Give OpenGL the data (copy as bytes to GPU memory)
     unsigned int buffer;
-    glGenBuffers(1, &buffer);
-    glBindBuffer(GL_ARRAY_BUFFER, buffer);
+    GLCall(glGenBuffers(1, &buffer));
+    GLCall(glBindBuffer(GL_ARRAY_BUFFER, buffer));
     // Copy data
-    glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(float), positions, GL_STATIC_DRAW);
+    GLCall(glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(float), positions, GL_STATIC_DRAW));
     // Define a vertex attribute (position)
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
+    GLCall(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0));
     // Enable this attribute
-    glEnableVertexAttribArray(0);
+    GLCall(glEnableVertexAttribArray(0));
 
 
     unsigned int indexBuffer;
-    glGenBuffers(1, &indexBuffer);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW);
+    GLCall(glGenBuffers(1, &indexBuffer));
+    GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer));
+    GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW));
 
     // Create shaders as strings from file
     ShaderProgramSources sources = ParseShader("res/shaders/Basic.shader");
@@ -149,13 +171,23 @@ int main(void)
     std::cout << sources.FragmentSource<< std::endl;*/
 
     unsigned int shader = CreateShader(sources.VertexSource, sources.FragmentSource);
-    glUseProgram(shader);
+    GLCall(glUseProgram(shader));
 
+    GLCall(int location = glGetUniformLocation(shader, "u_Color"));
+    ASSERT(location != -1);
+
+    float r = 0.0f, increment = 0.005f;
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
+
+        r += increment;
+        if (r > 1.0f || r < 0.0f)
+            increment = -increment;
+
+        GLCall(glUniform4f(location, r, -r, 0.0, 1.0f));
 
         // Legacy OpenGL for test purpose
         /*glBegin(GL_TRIANGLES);
@@ -166,7 +198,7 @@ int main(void)
 
         // Modern OpenGL
         // Will draw the bound buffer
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+        GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
         //glDrawArrays(GL_TRIANGLES, 0, 3);
 
         /* Swap front and back buffers */
@@ -177,7 +209,7 @@ int main(void)
     }
 
     // Cleaning
-    glDeleteProgram(shader);
+    GLCall(glDeleteProgram(shader));
 
     glfwTerminate();
     return 0;

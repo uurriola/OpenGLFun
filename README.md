@@ -7,6 +7,6 @@ I'll render here some results to observe my progress.
 
 ## Playing with colors
 
-![Color change](/Assets/images/color_changes.gif)
+![Color change](/Assets/images/color_change.gif)
 
 ![Breathing wave](/Assets/images/breathing_wave.gif)

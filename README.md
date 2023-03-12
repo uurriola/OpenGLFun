@@ -8,3 +8,5 @@ I'll render here some results to observe my progress.
 ## Playing with colors
 
 ![Color change](/Assets/images/color_changes.gif)
+
+![Breathing wave](/Assets/images/breathing_wave.gif)

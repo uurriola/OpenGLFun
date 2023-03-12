@@ -175,8 +175,10 @@ int main(void)
 
     GLCall(int location = glGetUniformLocation(shader, "u_Color"));
     ASSERT(location != -1);
+    GLCall(int timeLocation = glGetUniformLocation(shader, "u_time"));
+    ASSERT(timeLocation != -1);
 
-    float r = 0.0f, increment = 0.005f;
+    float r = 0.0f, increment = 0.005f, currentTime = 5.0f, deltaTime = 0.005f;
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
@@ -186,8 +188,12 @@ int main(void)
         r += increment;
         if (r > 1.0f || r < 0.0f)
             increment = -increment;
+        currentTime += deltaTime;
+        if (currentTime > 5.5 || currentTime < 4.5)
+            deltaTime = -deltaTime;
 
-        GLCall(glUniform4f(location, r, -r, 0.0, 1.0f));
+        GLCall(glUniform1f(location, r));
+        GLCall(glUniform1f(timeLocation, currentTime));
 
         // Legacy OpenGL for test purpose
         /*glBegin(GL_TRIANGLES);

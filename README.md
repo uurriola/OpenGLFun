@@ -10,3 +10,5 @@ I'll render here some results to observe my progress.
 ![Color change](/Assets/images/color_change.gif)
 
 ![Breathing wave](/Assets/images/breathing_wave.gif)
+
+![Texture and matrices](/Assets/images/textures_matrices.gif)

@@ -23,6 +23,8 @@
     <ClCompile Include="src\IndexBuffer.cpp" />
     <ClCompile Include="src\Renderer.cpp" />
     <ClCompile Include="src\Shader.cpp" />
+    <ClCompile Include="src\test\Test.cpp" />
+    <ClCompile Include="src\test\TestBlendTexture.cpp" />
     <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\vendor\imgui\imgui.cpp" />
     <ClCompile Include="src\vendor\imgui\imgui_demo.cpp" />
@@ -35,11 +37,17 @@
     <ClCompile Include="src\VertexArray.cpp" />
     <ClCompile Include="src\VertexBuffer.cpp" />
     <ClCompile Include="src\VertexBufferLayout.cpp" />
+    <ClCompile Include="src\test\TestClearColor.cpp">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">src;src/vendor;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\GLFW\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">src;src/vendor;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\GLFW\include</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="src\test\TestRotatingTexture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\IndexBuffer.h" />
     <ClInclude Include="src\Renderer.h" />
     <ClInclude Include="src\Shader.h" />
+    <ClInclude Include="src\test\TestBlendTexture.h" />
     <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\vendor\imgui\imconfig.h" />
     <ClInclude Include="src\vendor\imgui\imgui.h" />
@@ -54,12 +62,17 @@
     <ClInclude Include="src\VertexArray.h" />
     <ClInclude Include="src\VertexBuffer.h" />
     <ClInclude Include="src\VertexBufferLayout.h" />
+    <ClInclude Include="src\test\Test.h" />
+    <ClInclude Include="src\test\TestClearColor.h" />
+    <ClInclude Include="src\test\TestRotatingTexture.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\textures\wood.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\shaders\Basic.shader" />
+    <None Include="res\shaders\Texture.shader" />
+    <None Include="res\shaders\Wave.shader" />
+    <None Include="res\shaders\WaveTextureBlend.shader" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

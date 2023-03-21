@@ -1,7 +1,6 @@
 #shader vertex
 #version 330 core
 
-// Load in attribute at index 0 as a vec4
 layout(location = 0) in vec4 position;
 layout(location = 1) in vec2 texCoord;
 

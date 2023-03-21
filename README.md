@@ -5,6 +5,8 @@ I recently decided to extend my knowledges on GPU computing. Let's start with so
 
 I'll render here some results to observe my progress.
 
+Based on [tutorials on Youtube by The Cherno](https://youtube.com/playlist?list=PLlrATfBNZ98foTJPJ_Ev03o2oq3-GGOS2).
+
 ## Playing with colors
 
 ![Color change](/Assets/images/color_change.gif)
